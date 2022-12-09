@@ -48,7 +48,7 @@ runs:
 
     - name: Generate unique name for deployment
       id: generate-uuid
-      run: echo "uuid=$(date +'%Y%m%d')$(uuidgen)" >> $GITHUB_OUTPUT
+      run: echo "uuid=$(date +'%Y%m%d')$(cut -c 1-8<<< $(uuidgen))" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Run ARM deploy
