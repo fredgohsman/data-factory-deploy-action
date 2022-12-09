@@ -42,12 +42,17 @@ runs:
           -deleteDeployment $false
       shell: pwsh
 
+    - name: Generate unique name for deployment
+      id: generate-uuid
+      run: echo "uuid=$(uuidgen)" >> $GITHUB_OUTPUT
+
     - name: Run ARM deploy
       uses: azure/arm-deploy@v1
       with:
         resourceGroupName: ${{ inputs.resourceGroupName }}
         template: ${{ inputs.armTemplateFile }}
         parameters: ${{ inputs.armTemplateParametersFile }} factoryName=${{ inputs.dataFactoryName }} ${{ inputs.additionalParameters }}
+        deploymentName: ${{ inputs.armTemplateFile }}-${{ steps.generate-uuid.outputs.uuid }}
         
     - name: Run Post-deployment script
       run: |
