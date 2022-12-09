@@ -24,6 +24,10 @@ inputs:
     description: 'Parameters which skip the Az module installation'
     required: false
     default: 'false'
+  deleteDeployment:
+    description: 'Whether to delete the deployment after deploying'
+    required: false
+    default: 'true'
 
 runs:
   using: 'composite'
@@ -45,6 +49,7 @@ runs:
     - name: Generate unique name for deployment
       id: generate-uuid
       run: echo "uuid=$(date +'%Y%m%d')$(uuidgen)" >> $GITHUB_OUTPUT
+      shell: bash
 
     - name: Run ARM deploy
       uses: azure/arm-deploy@v1
