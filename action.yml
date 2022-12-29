@@ -47,8 +47,8 @@ runs:
       shell: pwsh
 
     - name: Generate unique name for deployment
-      id: generate-uuid
-      run: echo "uuid=$(date +'%Y%m%d')$(cut -c 1-8<<< $(uuidgen))" >> $GITHUB_OUTPUT
+      id: generate-timestamp
+      run: echo "timestamp=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Run ARM deploy
@@ -57,7 +57,7 @@ runs:
         resourceGroupName: ${{ inputs.resourceGroupName }}
         template: ${{ inputs.armTemplateFile }}
         parameters: ${{ inputs.armTemplateParametersFile }} factoryName=${{ inputs.dataFactoryName }} ${{ inputs.additionalParameters }}
-        deploymentName: ${{ inputs.armTemplateFile }}-${{ steps.generate-uuid.outputs.uuid }}
+        deploymentName: ${{ inputs.armTemplateFile }}-${{ steps.generate-timestamp.outputs.timestamp }}
         
     - name: Run Post-deployment script
       run: |
