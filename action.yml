@@ -42,6 +42,7 @@ runs:
   steps:
     - name: Set deploymentTemplate value
       id: deploymentVariable
+      shell: bash
       run: |
         if [ ${{ inputs.useLinkedTemplates }} == 'true' ]; then
           echo "Use Linked ARM Templates"
