@@ -59,11 +59,11 @@ runs:
     - name: Run Pre-deployment script
       run: |
         ${{ github.action_path }}/PrePostDeploymentScript.Ver2.ps1 `
-          -armTemplate "${{ inputs.armTemplateFile }}" `
+          -ArmTemplate "${{ inputs.armTemplateFile }}" `
           -ResourceGroupName "${{ inputs.resourceGroupName }}" `
           -DataFactoryName "${{ inputs.dataFactoryName }}" `
-          -predeployment $true `
-          -deleteDeployment $false
+          -Predeployment $true `
+          -DeleteDeployment $false
       shell: pwsh
 
     - name: Generate unique name for deployment
