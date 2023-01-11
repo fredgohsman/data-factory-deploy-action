@@ -5,33 +5,41 @@ inputs:
   resourceGroupName:
     description: 'Data Factory resource group name'
     required: true
+    
   dataFactoryName:
     description: 'Data factory name'
     required: true
+    
   armTemplateFile:
     description: 'ARM template file name'
     required: false
     default: './ARMTemplateForFactory.json'
+    
   armTemplateParametersFile:
     description: 'ARM template parameters file name'
     required: false
     default: './ARMTemplateParametersForFactory.json'
+    
   additionalParameters:
     description: 'Parameters which will be replaced in the ARM template'
     required: false
     default: ''
+    
   skipAzModuleInstallation:
     description: 'Parameters which skip the Az module installation'
     required: false
     default: 'false'
+    
   deleteDeployment:
     description: 'Whether to delete the deployment after deploying'
     required: false
     default: 'true'
+    
   useLinkedTemplates:
     description: 'Whether to use linked templates for ARM deployment'
     required: false
     default: 'false'
+    
   armLinkedTemplateFile:
     description: 'ARM linked template file name'
     required: false
