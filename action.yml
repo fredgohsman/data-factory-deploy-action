@@ -41,15 +41,15 @@ runs:
   using: 'composite'
   steps:
     - name: Set deploymentTemplate value
-      id: deploymentVariable
+      id: deploymentTemplate
       shell: bash
       run: |
         if [ ${{ inputs.useLinkedTemplates }} == 'true' ]; then
           echo "Use Linked ARM Templates"
-          echo "deploymentVariable=${{ inputs.armLinkedTemplateFile }}" >> $GITHUB_ENV
+          echo "deploymentTemplate=${{ inputs.armLinkedTemplateFile }}" >> $GITHUB_ENV
         else
           echo "Use Default ARM Template"
-          echo "deploymentVariable=${{ inputs.armTemplateFile }}" >> $GITHUB_ENV
+          echo "deploymentTemplate=${{ inputs.armTemplateFile }}" >> $GITHUB_ENV
         fi  
   
     - name: Install Az PowerShell module
