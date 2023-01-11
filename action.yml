@@ -28,10 +28,29 @@ inputs:
     description: 'Whether to delete the deployment after deploying'
     required: false
     default: 'true'
+  useLinkedTemplates:
+    description: 'Whether to use linked templates for ARM deployment'
+    required: false
+    default: 'false'
+  armLinkedTemplateFile:
+    description: 'ARM linked template file name'
+    required: false
+    default: 'linkedTemplates/ArmTemplate_master.json'
 
 runs:
   using: 'composite'
   steps:
+    - name: Set deploymentTemplate value
+      id: deploymentVariable
+      run: |
+        if [ ${{ inputs.useLinkedTemplates }} == 'true' ]; then
+          echo "Use Linked ARM Templates"
+          echo "deploymentVariable=${{ inputs.armLinkedTemplateFile }}" >> $GITHUB_ENV
+        else
+          echo "Use Default ARM Template"
+          echo "deploymentVariable=${{ inputs.armTemplateFile }}" >> $GITHUB_ENV
+        fi  
+  
     - name: Install Az PowerShell module
       run: if('${{ inputs.skipAzModuleInstallation }}' -ne 'true') { Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force }
       shell: pwsh
@@ -55,7 +74,7 @@ runs:
       uses: azure/arm-deploy@v1
       with:
         resourceGroupName: ${{ inputs.resourceGroupName }}
-        template: ${{ inputs.armTemplateFile }}
+        template: ${{ steps.deploymentTemplate.outputs.deploymentTemplate }}
         parameters: ${{ inputs.armTemplateParametersFile }} factoryName=${{ inputs.dataFactoryName }} ${{ inputs.additionalParameters }}
         deploymentName: ${{ steps.generate-deployment-name.outputs.name }}
         
@@ -66,5 +85,5 @@ runs:
           -ResourceGroupName "${{ inputs.resourceGroupName }}" `
           -DataFactoryName '${{ inputs.dataFactoryName }}' `
           -predeployment $false `
-          -deleteDeployment $false
+          -deleteDeployment $${{ inputs.deleteDeployment }}
       shell: pwsh
