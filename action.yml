@@ -11,11 +11,11 @@ inputs:
   armTemplateFile:
     description: 'ARM template file name'
     required: false
-    default: 'ARMTemplateForFactory.json'
+    default: './ARMTemplateForFactory.json'
   armTemplateParametersFile:
     description: 'ARM template parameters file name'
     required: false
-    default: 'ARMTemplateParametersForFactory.json'
+    default: './ARMTemplateParametersForFactory.json'
   additionalParameters:
     description: 'Parameters which will be replaced in the ARM template'
     required: false
@@ -35,7 +35,7 @@ inputs:
   armLinkedTemplateFile:
     description: 'ARM linked template file name'
     required: false
-    default: 'linkedTemplates/ArmTemplate_master.json'
+    default: './linkedTemplates/ArmTemplate_master.json'
 
 runs:
   using: 'composite'
