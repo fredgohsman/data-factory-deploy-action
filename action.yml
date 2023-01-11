@@ -41,17 +41,18 @@ runs:
   using: 'composite'
   steps:
     - name: Set deploymentTemplate value
-      id: deploymentTemplate
+      id: variables
       shell: bash
       run: |
+        echo "deploymentName=deployment-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
         if [ ${{ inputs.useLinkedTemplates }} == 'true' ]; then
           echo "Use Linked ARM Templates"
           echo "deploymentTemplate=${{ inputs.armLinkedTemplateFile }}" >> $GITHUB_ENV
         else
           echo "Use Default ARM Template"
           echo "deploymentTemplate=${{ inputs.armTemplateFile }}" >> $GITHUB_ENV
-        fi  
-  
+        fi
+
     - name: Install Az PowerShell module
       run: if('${{ inputs.skipAzModuleInstallation }}' -ne 'true') { Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force }
       shell: pwsh
@@ -66,19 +67,14 @@ runs:
           -DeleteDeployment $false
       shell: pwsh
 
-    - name: Generate unique name for deployment
-      id: generate-deployment-name
-      run: echo "name=deployment-$(date +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
-      shell: bash
-
     - name: Run ARM deploy
       #uses: azure/arm-deploy@v1
       uses: fredgohsman/arm-deploy@debug
       with:
         resourceGroupName: ${{ inputs.resourceGroupName }}
-        template: ${{ steps.deploymentTemplate.outputs.deploymentTemplate }}
+        template: ${{ steps.variables.outputs.deploymentTemplate }}
         parameters: ${{ inputs.armTemplateParametersFile }} factoryName=${{ inputs.dataFactoryName }} ${{ inputs.additionalParameters }}
-        deploymentName: ${{ steps.generate-deployment-name.outputs.name }}
+        deploymentName: ${{ steps.variables.outputs.deploymentName }}
         
     - name: Run Post-deployment script
       run: |
