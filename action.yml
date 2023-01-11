@@ -57,7 +57,7 @@ runs:
 
     - name: Run Pre-deployment script
       run: |
-        ${{ github.action_path }}/PrePostDeploymentScript.ps1 `
+        ${{ github.action_path }}/PrePostDeploymentScript.Ver2.ps1 `
           -armTemplate "${{ inputs.armTemplateFile }}" `
           -ResourceGroupName "${{ inputs.resourceGroupName }}" `
           -DataFactoryName "${{ inputs.dataFactoryName }}" `
@@ -80,7 +80,7 @@ runs:
         
     - name: Run Post-deployment script
       run: |
-        ${{ github.action_path }}/PrePostDeploymentScript.ps1 `
+        ${{ github.action_path }}/PrePostDeploymentScript.Ver2.ps1 `
           -armTemplate "${{ inputs.armTemplateFile }}" `
           -ResourceGroupName "${{ inputs.resourceGroupName }}" `
           -DataFactoryName '${{ inputs.dataFactoryName }}' `
