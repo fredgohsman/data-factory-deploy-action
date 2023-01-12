@@ -76,8 +76,8 @@ runs:
       shell: pwsh
 
     - name: Run ARM deploy
-      #uses: azure/arm-deploy@v1
-      uses: fredgohsman/arm-deploy@debug
+      uses: azure/arm-deploy@v1
+      #uses: fredgohsman/arm-deploy@debug
       with:
         resourceGroupName: ${{ inputs.resourceGroupName }}
         template: ${{ steps.variables.outputs.deploymentTemplate }}
